@@ -1,0 +1,5 @@
+INSTRUCCIONES DEL JUEGO
+
+1.Tratar de encontrar las cartas pares para ganar puntos.
+2.Las cartas que sean impares se volveran a voltear boca abajo y las pares se quedarán presentes en pantalla.
+3.Cuando halles todas las pares se terminará el juego.

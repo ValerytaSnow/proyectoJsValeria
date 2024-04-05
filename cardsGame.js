@@ -1,48 +1,78 @@
-let cartita = document.querySelectorAll('.card')
-
-let volteos=[]
-let ronda=1
-let cartasvolteadas =0
+let cartas = document.querySelectorAll('.card')
 
 
-document.getElementById('idronda').textContent = "Ronda: " + ronda
+let volteadas = []
+let cartasVolteadas = 0
+let totalPares = cartas.length / 2
+let puntos = 0
+let temporizador
 
-cartita.forEach(cartitas => {
-    cartitas.addEventListener('click', voltear)
+document.getElementById('idronda').textContent = "Ronda: " + puntos
+
+cartas.forEach(carta => {
+    carta.addEventListener('click', voltear)
 })
 
-function voltear(event) {
-        let cartitas = event.currentTarget;
 
-    if (cartitas.classList.contains('volteada')) {
+
+function voltear(event) {
+    let carta = event.currentTarget
+
+    if (carta.classList.contains('volteada')) {
         return
     }
 
-    cartitas.classList.add('volteada')
-    volteos.push(cartitas)
+    carta.classList.add('volteada') 
+    volteadas.push(carta)
 
-    let totalCartas = volteos.length
-
-    cartasvolteadas++
-
-    if (volteos.length === 2) {
-        let card1 = volteos[0].querySelector('.card__face--back img').getAttribute('src')
-        let card2 = volteos[1].querySelector('.card__face--back img').getAttribute('src')
+    if (volteadas.length === 2) {
+        let card1 = volteadas[0].getAttribute('data-type')
+        let card2 = volteadas[1].getAttribute('data-type')
 
         if (card1 === card2) {
-            alert('PAR')
+            puntos++
+            document.getElementById('idronda').textContent = "Ronda: " + puntos
+            volteadas = []
+            cartasVolteadas += 2
         } else {
             setTimeout(() => {
-                volteos.forEach(lascards => lascards.classList.remove('volteada'))
-                volteos = []
-            }, 1000);
+                volteadas.forEach(carta => {
+                    carta.classList.remove('volteada')
+                })
+                volteadas = []
+            }, 1000)
         }
-        ronda++
-        document.getElementById('idronda').textContent = "Ronda: " + ronda    
+        aumentarRonda()
     }
 
+    if (cartasVolteadas === totalPares * 2) {
+        terminarJuego(true)
+    }
 }
 
-if (cartasvolteadas === totalCartas) {
-    alert('¡Juego terminado!');
+
+
+
+function aumentarRonda() {
+    puntos++
+    document.getElementById('idronda').textContent = "Ronda: " + puntos
 }
+
+
+
+
+function terminarJuego(ganador) {
+    clearInterval(temporizador)
+    if (ganador) {
+        alert('¡GANADOR! Puntos: ' + puntos , )
+    } else {
+        alert('¡PERDISTE! Puntos: ' + puntos)
+    }
+}
+
+
+
+
+temporizador = setTimeout(() => {
+    terminarJuego(false)
+}, 20000)
